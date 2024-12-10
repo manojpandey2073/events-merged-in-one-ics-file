@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMO events ICS file generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <!-- stylesheet -->
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+
+</head>
+
+<body>
+
+    <section id="ics_form">
+        <div class="container">
+
+            
+
+
+            <div class="ics_form_container">
+                <div class="ics_form_heading">
+                    <h2>Huddle Event Details</h2>
+                </div>
+                <div class="event_details_container" id="huddle_section" data-counter="1">
+                    <form action="">
+                        <div class="huddle_row_1">
+                            <div class="huddle_title">
+                                <label for="event_name">Huddle Title</label>
+                                <input type="text" name="event" id="event_name_1">
+                            </div>
+
+                        </div>
+                        <div class="huddle_row_2">
+                            <div class="huddle_row_2_1">
+                                <div class="event_dnt_container">
+                                    <div class="huddle_time_date">
+                                        <label for="event_date_time">Date and Time</label>
+                                        <div class="event_date_time_div">
+                                            <input type="datetime-local" name="event" value="2024-12-08T10:00"
+                                                id="event_date_time_1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="event_duration_container">
+                                    <!-- <label for="event_duration">Duration of Event (H:M)</label>
+                                    <input type="time" name="event_duration" value="00:00" id="event_duration_1"> -->
+                                    <label for="event_duration_1">Duration of Event (H:M)</label>
+                                    <div class="event_hour_min">
+                                        <select id="event_hour_1">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                    </select>
+                                    <select id="event_min_1">
+                                        <option value="00">00</option>
+                                        <option value="15">15</option>
+                                        <option value="30">30</option>
+                                        <option value="45">45</option>
+                                    </select>
+                                    </div>
+                                    
+                                </div>
+                                <div class="location_details">
+                                    <label for="event_location">Location</label>
+                                    <input type="text" name="" id="event_location_1">
+                                </div>
+
+
+                            </div>
+                            <div class="event_description_container">
+                                <label for="event_description">Description</label>
+                                <textarea name="event_des" id="event_description_1"></textarea>
+                            </div>
+                        </div>
+
+                    </form>
+                    <div class="date_time_add_btn" aria-describedby="Add more button">
+                        Add Date and Time +
+                    </div>
+                </div>
+                
+            </div>
+            <div class="huddle_add_more">
+                <button type="button">Add More Huddle Events +</button>
+            </div>
+            <div class="generate_ics_file_btn">
+                <button type="button">Download ICS</button>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="index.js"></script>
+    <script>
+        const timeInputs = document.getElementsByName('event_duration')
+        // Initialize Flatpickr for each input
+        timeInputs.forEach(input => {
+            flatpickr(input, {
+                enableTime: true,
+                noCalendar: true,
+                dateFormat: "H:i",
+                time_24hr: true,
+                minuteIncrement: 15, // Customize minutes dropdown
+                defaultHour: 0,      // Customize default hour
+            });
+        });
+    </script>
+</body>
+
+</html>

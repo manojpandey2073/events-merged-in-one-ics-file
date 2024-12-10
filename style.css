@@ -1,0 +1,205 @@
+*{
+    box-sizing: border-box;
+}
+h1, h2, h2, h4, h5, h6, p{
+    margin: 0;
+}
+body{
+    font-family: 'Montserrat', sans-serif;
+}
+.container{
+    max-width: 1200px;
+    padding: 0 20px;
+    margin: auto;
+}
+#ics_form{
+    padding: 30px 0;
+}
+.ics_form_container{
+    max-width: 780px;
+    width: 100%;
+    margin: auto;
+}
+.ics_form_heading{
+    padding-bottom: 30px;
+}
+.ics_form_heading h2{
+    font-size: 24px;
+    line-height: 28px;
+    background: linear-gradient(270.85deg, #19c027 -.82%, #0074f8 99.32%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+}
+
+.event_details_container{
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    -webkit-box-shadow: 2px 4px 18px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 4px 18px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 4px 18px 0px rgba(0,0,0,0.75);
+}
+.event_hour_min{
+    display: flex;
+    gap: 20px;
+}
+input[type=datetime-local]{
+    max-width: 200px;
+    width: 100%;
+}
+input[type=text] ,input[type=datetime-local], input[type=time], select{
+    border-radius: 4px;
+    border: 1px solid rgba(0, 116, 248, 0);
+    background: #f5f7f9;
+    padding: 10px 14px;
+    height: 40px;
+    color: #03080f;
+    font-size: 14px;
+    line-height: normal;
+    font-family: 'Montserrat', sans-serif;
+}
+input[type=text]:focus ,input[type=datetime-local]:focus, input[type=time]:focus, select:focus{
+    border: 1px solid #d6dfe7;
+    background-color: #ffffff;
+}
+label{
+    padding-bottom: 15px;
+    font-size: 14px;
+    color: #003b6b;
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+}
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.huddle_row_1{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+}
+.huddle_row_2{
+    width: 100%;
+}
+.huddle_row_2_1{
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    width: 100%;
+    padding-bottom: 15px;
+}
+.event_dnt_container{
+    display: flex;
+    gap: 20px;
+    flex: 40%;
+}
+
+.huddle_title{
+    flex: 70%;
+}
+.huddle_title, .huddle_time_date{
+    display: flex;
+    flex-direction: column;
+}
+.location_details{
+    display: flex;
+    flex-direction: column;
+    flex: 40%;
+}
+.huddle_time_date{
+    position: relative;
+}
+
+.date_time_add_btn{
+    padding: 10px 15px;
+    background-color: #256d1b;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 5px;
+    align-self: flex-end;
+    margin-top: 12px;
+    margin-bottom: 12px;
+}
+
+.event_description_container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.event_duration_container{
+    display: flex;
+    flex-direction: column;
+    flex: 40%;
+}
+.event_description_container textarea{
+    border-radius: 4px;
+    border: 1px solid rgba(0, 116, 248, 0);
+    background: #f5f7f9;
+    padding: 10px 14px;
+    color: #03080f;
+    font-size: 14px;
+    line-height: normal;
+    text-decoration: none;
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    resize: vertical;
+    height: 90px;
+}
+.event_date_time_div{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.event_delete_img{
+    width: 30px;
+    cursor: pointer;
+}
+
+
+/* huddle add more button */
+
+.huddle_add_more{
+    text-align: left;
+    max-width: 780px;
+    width: 100%;
+    margin: auto;
+    
+}
+.huddle_add_more button{
+    padding: 10px 15px;
+    margin: 0;
+    border: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    background-color: #19c027;
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+}
+.generate_ics_file_btn{
+    text-align: center;
+    padding-top: 20px;
+}
+.generate_ics_file_btn button{
+    border: 0;
+    background-color: #0074f8;
+    color: #ffffff;
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+}
