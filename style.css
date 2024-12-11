@@ -33,6 +33,7 @@ body{
 }
 
 .event_details_container{
+    background-color: #ffffff;
     padding: 30px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -41,6 +42,7 @@ body{
     -moz-box-shadow: 2px 4px 18px 0px rgba(0,0,0,0.75);
     box-shadow: 2px 4px 18px 0px rgba(0,0,0,0.75);
 }
+
 .event_hour_min{
     display: flex;
     gap: 20px;
