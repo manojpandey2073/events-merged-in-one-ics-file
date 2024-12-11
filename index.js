@@ -76,12 +76,14 @@ document.addEventListener("DOMContentLoaded", function () {
         const inputs = clonedHuddleRow.querySelectorAll('input, textarea, select');
         console.log(inputs);
         const currentCounter = parseInt(parentContainer.getAttribute('data-counter'), 10); // Get the current counter
+        console.log(currentCounter);
+        
         inputs.forEach(input => {
             input.value = ''; // Clear input value
             const originalId = input.id || 'input'; // Fallback for elements without IDs
             input.id = `${originalId}_${currentCounter}`; // Assign unique ID
         });
-
+        
         // Increment the counter for this container
         parentContainer.setAttribute('data-counter', currentCounter + 1);
 
@@ -99,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
         `;
         crossIcon.addEventListener('click', function () {
             clonedHuddleRow.remove();
+           
         });
 
         clonedHuddleRow.style.position = 'relative'; // Ensure the cross icon is properly positioned
