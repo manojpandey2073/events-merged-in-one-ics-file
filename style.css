@@ -244,17 +244,21 @@ label{
     background-color: #f9f9f9;
     cursor: pointer;
     gap: 20px;
-    align-items: baseline;
+    align-items: center;
     margin-bottom: 20px;
 }
 .minimized_title{
     flex: 46%;
+    align-self: baseline;
 }
 .minimized_date{
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
     justify-content: flex-end;
+}
+.minimized_date_container{
+    flex: 51%;
 }
 .minimized_date_span{
     background-color: #cbd6e2;

@@ -165,11 +165,10 @@ document.addEventListener('DOMContentLoaded', () => {
             editButton.innerHTML = '<i class="fa-solid fa-pen"></i>';
             editButton.classList.add('edit_details_btn');
             editButton.style.cssText = `
-                margin-top: 10px;
                 background-color: transparent;
                 border: none;
                 cursor: pointer;
-                font-size: 20px;
+                font-size: 16px;
                 color: #333;
             `;
             editButton.title = "Edit Details";
