@@ -6,6 +6,8 @@ h1, h2, h2, h4, h5, h6, p{
 }
 body{
     font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    background-color: #03080f;
 }
 .container{
     max-width: 1200px;
@@ -14,6 +16,12 @@ body{
 }
 #ics_form{
     padding: 30px 0;
+    background-color: #03080f;
+}
+.ics_outer_container{
+    max-width: 780px;
+    width: 100%;
+    margin: auto;
 }
 .ics_form_container{
     max-width: 780px;
@@ -22,10 +30,11 @@ body{
 }
 .ics_form_heading{
     padding-bottom: 30px;
+    text-align: center;
 }
 .ics_form_heading h2{
-    font-size: 24px;
-    line-height: 28px;
+    font-size: 28px;
+    line-height: 34px;
     background: linear-gradient(270.85deg, #19c027 -.82%, #0074f8 99.32%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -33,7 +42,7 @@ body{
 }
 
 .event_details_container{
-    background-color: #ffffff;
+    background-color: #ffffffcc;
     padding: 30px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -46,6 +55,7 @@ body{
 .event_hour_min{
     display: flex;
     gap: 20px;
+    justify-content: center;
 }
 input[type=datetime-local]{
     max-width: 200px;
@@ -76,7 +86,14 @@ label{
     font-weight: 700;
     line-height: 24px;
 }
-form{
+/* form{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+    justify-content: space-between;
+} */
+.event_merger_form_container{
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -92,17 +109,22 @@ form{
 .huddle_row_2{
     width: 100%;
 }
+
+/* .event_details_container .huddle_row_2:not(:first-child){
+    padding-top: 20px;
+    border-top: 1px solid #03080f;
+} */
 .huddle_row_2_1{
     display: flex;
     justify-content: space-between;
     gap: 20px;
     width: 100%;
     padding-bottom: 15px;
+    flex-wrap: wrap;
 }
 .event_dnt_container{
     display: flex;
     gap: 20px;
-    flex: 40%;
 }
 
 .huddle_title{
@@ -116,6 +138,7 @@ form{
     display: flex;
     flex-direction: column;
     flex: 40%;
+
 }
 .huddle_time_date{
     position: relative;
@@ -131,8 +154,16 @@ form{
     align-self: flex-end;
     margin-top: 12px;
     margin-bottom: 12px;
+    align-self: flex-start;
 }
-
+.event_save_details{
+    padding: 10px 15px;
+    background-color: #3345ff;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    border-radius: 5px;
+}
 .event_description_container{
     display: flex;
     flex-direction: column;
@@ -141,7 +172,6 @@ form{
 .event_duration_container{
     display: flex;
     flex-direction: column;
-    flex: 40%;
 }
 .event_description_container textarea{
     border-radius: 4px;
@@ -172,9 +202,6 @@ form{
 
 .huddle_add_more{
     text-align: left;
-    max-width: 780px;
-    width: 100%;
-    margin: auto;
     
 }
 .huddle_add_more button{
@@ -205,3 +232,44 @@ form{
     font-size: 16px;
     font-family: 'Montserrat', sans-serif;
 }
+
+
+.huddle_minimized {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #d6dfe7;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    gap: 20px;
+    align-items: baseline;
+    margin-bottom: 20px;
+}
+.minimized_title{
+    flex: 46%;
+}
+.minimized_date{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.minimized_date_span{
+    background-color: #cbd6e2;
+    padding: 4px;
+    border-radius: 5px;
+}
+.expand_huddle{
+    border: 0;
+    outline: 0;
+}
+.expand_huddle img{
+    width: 20px;
+}
+
+.huddle_full {
+    display: block;
+}
+
