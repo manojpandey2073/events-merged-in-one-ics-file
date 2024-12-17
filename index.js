@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
 
     const icsContainer = document.querySelector('.ics_form_container');
-    let eventDetailsCounter = 2; // Counter to ensure unique IDs
+    let eventDetailsCounter = 1; // Counter to ensure unique IDs
 
     // Function to append the cloned element
     function appendClonedElement() {
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const clonedHuddleRow = huddleRow.cloneNode(true);
         const inputs = clonedHuddleRow.querySelectorAll('input, textarea, select');
         const currentCounter = parseInt(parentContainer.getAttribute('data-counter'), 10) || 0;
-        
+        console.log(currentCounter);
         inputs.forEach(input => {
             const originalId = input.id || 'input';
             input.id = `${originalId}_${currentCounter}`;
@@ -192,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
 
-    
     
 
     // Event delegation for dynamically added elements
