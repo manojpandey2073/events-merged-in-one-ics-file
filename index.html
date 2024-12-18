@@ -13,10 +13,10 @@
     
     <!-- font awesome cdn link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <!-- stylesheet -->
     <link rel="stylesheet" href="style.css">
     
-
 
 </head>
 
@@ -27,7 +27,10 @@
             <div class="ics_outer_container">
                 <div class="ics_form_container">
                     <div class="ics_form_heading">
-                        <h2>Event Merge Tool</h2>
+                        <h2>Evently</h2>
+                    </div>
+                    <div class="ics_form_para">
+                        <p>Your Ultimate Tool Simplify Events</p>
                     </div>
                     <div class="event_details_container" id="huddle_section" data-counter="0">
                         <div class="huddle_minimized" style="display: none;">
@@ -42,7 +45,7 @@
                                 <div class="huddle_row_1">
                                     <div class="huddle_title">
                                         <label for="event_name">Event Title</label>
-                                        <input type="text" name="event" id="event_name_1">
+                                        <input type="text" name="event" autofocus="autofocus" id="event_name_1">
                                     </div>
         
                                 </div>
@@ -92,10 +95,12 @@
                             </div>
                             
                             <div class="date_time_add_btn" aria-describedby="Add more button">
-                                Add Date and Time +
+                                <button type="button">Add More Date and Time +</button>
+                                
                             </div>
                             <div class="event_save_details" aria-describedby="Save Details">
-                                Save Details
+                                <button type="button">Save Details</button>
+                                
                             </div>
                         </form>
                         
@@ -104,7 +109,7 @@
                     
                 </div>
                 <div class="huddle_add_more">
-                    <button type="button">Add More Huddle Events +</button>
+                    <button type="button">Add More Events +</button>
                 </div>
                 <div class="generate_ics_file_btn">
                     <button type="button">Download ICS</button>
@@ -115,7 +120,7 @@
     </section>
 
     <script src="index.js"></script>
-    
+  
 </body>
 
 </html>

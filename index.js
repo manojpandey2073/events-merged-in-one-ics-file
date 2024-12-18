@@ -1,12 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Reference the "Add More Event" button
+    const addMoreEventButton = document.querySelector('.huddle_add_more button');
+
+    // Disable the "Add More Event" button initially
+    if (addMoreEventButton) {
+        disableAddMoreButton();
+    }
+     // Function to disable the "Add More Event" button
+     function disableAddMoreButton() {
+        if (addMoreEventButton) {
+            addMoreEventButton.disabled = true;
+            addMoreEventButton.style.opacity = "0.5";
+            addMoreEventButton.style.cursor = "not-allowed";
+            addMoreEventButton.title = "Please first save details of the event by clicking the Save Details button."; // hover message
+        }
+    }
+
+    // Function to enable the "Add More Event" button
+    function enableAddMoreButton() {
+        if (addMoreEventButton) {
+            addMoreEventButton.disabled = false;
+            addMoreEventButton.style.opacity = "1";
+            addMoreEventButton.style.cursor = "pointer";
+            addMoreEventButton.title = "";
+        }
+    }
     // To get Current time in date time field
+    const input_date_time = document.querySelector('input[type=datetime-local]');
+    const current_time = new Date();
+    
+    // Format the date to local time in 'YYYY-MM-DDTHH:mm' format
+    const year = current_time.getFullYear();
+    const month = String(current_time.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+    const day = String(current_time.getDate()).padStart(2, '0');
+    const hours = String(current_time.getHours()).padStart(2, '0');
+    const minutes = String(current_time.getMinutes()).padStart(2, '0');
+    
+    // Combine the parts into 'YYYY-MM-DDTHH:mm'
+    const localFormattedTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+    
+    input_date_time.value = localFormattedTime;    
+    
 
-    const input_date_time= document.querySelector('input[type=datetime-local]');
-    const current_time= new Date();
-    const formatted_time= current_time.toISOString().slice(0,16);
-    input_date_time.value=formatted_time;
-
+    
     let clonedEventDetailsContainer = null;
 
     // Function to clone the "event_details_container" element on page load
@@ -63,6 +100,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         icsContainer.appendChild(clonedSection);
         eventDetailsCounter++;
+
+        // Disable the "Add More Event" button after adding a new container
+        disableAddMoreButton();
     }
 
     // Function to clone the "huddle_row_2" section
@@ -128,7 +168,10 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             console.error('Event form not found in container.');
         }
-    
+
+        // Enable the "Add More Event" button after saving details
+        enableAddMoreButton();
+
         const titles = parentContainer.querySelectorAll('.huddle_title input[type=text]');
         const minimizedTitle = parentContainer.querySelector('.minimized_title');
         if (minimizedTitle) {
@@ -138,7 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         const dates = parentContainer.querySelectorAll('.event_date_time_div input[type=datetime-local]');
+        
         const minimizedDate = parentContainer.querySelector('.minimized_date');
+      
         if (minimizedDate) {
             minimizedDate.innerHTML = ''; // Clear previous content if any
             Array.from(dates).forEach(dateInput => {
@@ -149,13 +194,35 @@ document.addEventListener('DOMContentLoaded', () => {
                     day: 'numeric',
                     year: 'numeric'
                 }).format(specificDate);
+                const formatted_time = new Date(dateValue);
+                const hours= formatted_time.getHours();
+                
+                const minutes = formatted_time.getMinutes();
+                let zero_minutes = String(minutes); // Convert to string for padding
+                if(minutes<10){
+                    zero_minutes= zero_minutes.padStart(2,"0");
+                    
+                }
+                const AmOrPM= hours>= 12 ? 'PM' : 'AM';
+                const hours_12hrs = (hours % 12) || 12;
+ 
+                
+                const formatted_time_12hrs= hours_12hrs +":"+ zero_minutes+ AmOrPM;
+                
                 const span = document.createElement('span');
                 span.classList.add('minimized_date_span');
-                span.innerHTML = formatted_date;
+                span.innerHTML = `${formatted_date} ( ${formatted_time_12hrs} )`;
                 minimizedDate.appendChild(span);
             });
         } else {
             console.error('Minimized date not found in container.');
+        }
+
+        // Enable the "Add More Event" button
+        if (addMoreEventButton) {
+            addMoreEventButton.disabled = false;
+            addMoreEventButton.style.opacity = "1"; // Restore styling
+            addMoreEventButton.style.cursor = "pointer"; // Restore cursor
         }
     
         // Add a pencil button to allow editing
@@ -198,9 +265,9 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('click', (event) => {
         if (event.target.matches('.huddle_add_more button')) {
             appendClonedElement();
-        } else if (event.target.matches('.date_time_add_btn')) {
+        } else if (event.target.matches('.date_time_add_btn button')) {
             cloneHuddleRow(event.target);
-        } else if (event.target.matches('.event_save_details')) {
+        } else if (event.target.matches('.event_save_details button')) {
             minimizeHuddleEvent(event.target); // Pass the clicked button to scope logic
         }
     });
