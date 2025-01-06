@@ -10,10 +10,13 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
         rel="stylesheet">
+
+    <!-- font awesome cdn link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <!-- stylesheet -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
-<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
 
 
 </head>
@@ -22,98 +25,127 @@
 
     <section id="ics_form">
         <div class="container">
-
-            
-
-
-            <div class="ics_form_container">
-                <div class="ics_form_heading">
-                    <h2>Huddle Event Details</h2>
-                </div>
-                <div class="event_details_container" id="huddle_section" data-counter="1">
-                    <form action="">
-                        <div class="huddle_row_1">
-                            <div class="huddle_title">
-                                <label for="event_name">Huddle Title</label>
-                                <input type="text" name="event" id="event_name_1">
-                            </div>
-
-                        </div>
-                        <div class="huddle_row_2">
-                            <div class="huddle_row_2_1">
-                                <div class="event_dnt_container">
-                                    <div class="huddle_time_date">
-                                        <label for="event_date_time">Date and Time</label>
-                                        <div class="event_date_time_div">
-                                            <input type="datetime-local" name="event" value="2024-12-08T10:00"
-                                                id="event_date_time_1">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="event_duration_container">
-                                    
-                                    <label for="event_duration_1">Duration of Event (H:M)</label>
-                                    <div class="event_hour_min">
-                                        <select id="event_hour_1">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                    </select>
-                                    <select id="event_min_1">
-                                        <option value="00">00</option>
-                                        <option value="15">15</option>
-                                        <option value="30">30</option>
-                                        <option value="45">45</option>
-                                    </select>
-                                    </div>
-                                    
-                                </div>
-                                <div class="location_details">
-                                    <label for="event_location">Location</label>
-                                    <input type="text" name="" id="event_location_1">
-                                </div>
-
-
-                            </div>
-                            <div class="event_description_container">
-                                <label for="event_description">Description</label>
-                                <textarea name="event_des" id="event_description_1"></textarea>
-                            </div>
-                        </div>
-
-                    </form>
-                    <div class="date_time_add_btn" aria-describedby="Add more button">
-                        Add Date and Time +
+            <div class="ics_outer_container">
+                <div class="ics_form_container">
+                    <div class="ics_form_heading">
+                        <h2>Evently</h2>
                     </div>
+                    <div class="ics_form_para">
+                        <p>Your Ultimate Tool to Simplify Events</p>
+                    </div>
+                    <div class="event_details_container" id="huddle_section" data-counter="1">
+                        <div class="huddle_minimized" style="display: none;">
+                            <div class="minimized_title"></div>
+                            <div class="minimized_date_container">
+                                <div class="minimized_date"></div>
+                            </div>
+                            <!-- <button class="expand_huddle"><img src="https://img.icons8.com/ios/50/expand-arrow--v1.png" alt="arrow" srcset=""></button> -->
+                        </div>
+                        <form action="" name="form_1" id="form_1">
+                            <div class="event_merger_form_container">
+                                <div class="huddle_row_1">
+                                    <div class="huddle_title">
+                                        <label for="event_name">Event Title</label>
+                                        <input type="text" required name="event_name_1" autofocus="autofocus"
+                                            id="event_name_1">
+                                    </div>
+
+                                </div>
+                                <div class="huddle_row_2">
+                                    <div class="huddle_row_2_1">
+                                        <div class="event_dnt_container">
+                                            <div class="huddle_time_date">
+                                                <label for="event_date_time">Date and Time</label>
+                                                <div class="event_date_time_div">
+                                                    <input type="datetime-local" required name="event_date_time_1"
+                                                        value="2024-12-08T10:00" id="event_date_time_1">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="event_duration_container">
+
+                                            <label for="event_duration_1">Duration of Event (H:M)</label>
+                                            <div class="event_hour_min">
+                                                <select id="event_hour_1" name="event_hour_1" required>
+                                                    <option value="0">0</option>
+                                                    <option value="1" selected>1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                </select>
+                                                <select id="event_min_1" name="event_min_1" required>
+                                                    <option value="00" selected>00</option>
+                                                    <option value="15">15</option>
+                                                    <option value="30">30</option>
+                                                    <option value="45">45</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                        <div class="location_details">
+                                            <label for="event_location">Location</label>
+                                            <input type="text" name="event_location_1" id="event_location_1" required>
+                                        </div>
+
+
+                                    </div>
+                                    
+                                    <div class="event_description_container">
+                                        <label for="event_description">Description</label>
+                                        <textarea name="event_description_1" id="event_description_1"
+                                            required></textarea>
+                                    </div>
+                                    
+                                    <div class="event_organiser_details_container">
+                                        <div class="event_organiser_details_heading">
+                                            <h2 class="event_organiser_details_heading_text">Event Organiser Details</h2>
+                                        </div>
+                                        
+                                        <div class="event_organiser_details">
+                                            <div class="event_organiser_name">
+                                                <label for="">Organiser Name</label>
+                                                <input type="text" name="event_organiser_name_1"
+                                                    id="event_organiser_name_1" required>
+                                            </div>
+                                            <div class="event_organiser_email">
+                                                <label for="">Organiser Email</label>
+                                                <input type="email" name="event_organiser_email_1"
+                                                    id="event_organiser_email_1" required>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="date_time_add_btn_1" class="date_time_add_btn" aria-describedby="Add more button">
+                                <button type="button">Add More Date and Time +</button>
+
+                            </div>
+                            <div id="event_save_details_1" class="event_save_details" aria-describedby="Save Details">
+                                <button type="button">Save Details</button>
+
+                            </div>
+                        </form>
+
+
+                    </div>
+
                 </div>
-                
-            </div>
-            <div class="huddle_add_more">
-                <button type="button">Add More Huddle Events +</button>
-            </div>
-            <div class="generate_ics_file_btn">
-                <button type="button">Download ICS</button>
+                <div class="huddle_add_more">
+                    <button type="button">Add More Events +</button>
+                </div>
+                <div class="generate_ics_file_btn">
+                    <button id="submitButton" type="button">Download ICS</button>
+                </div>
             </div>
 
         </div>
     </section>
 
     <script src="index.js"></script>
-    <script>
-        const timeInputs = document.getElementsByName('event_duration')
-        // Initialize Flatpickr for each input
-        timeInputs.forEach(input => {
-            flatpickr(input, {
-                enableTime: true,
-                noCalendar: true,
-                dateFormat: "H:i",
-                time_24hr: true,
-                minuteIncrement: 15, // Customize minutes dropdown
-                defaultHour: 0,      // Customize default hour
-            });
-        });
-    </script>
+
+
 </body>
 
 </html>
