@@ -1,7 +1,7 @@
 {
+  "license": "MIT",
   "dependencies": {
     "express": "^4.21.2",
-    "ics": "^3.8.1",
-    "license": "MIT"
+    "ics": "^3.8.1"
   }
 }
