@@ -298,6 +298,7 @@ label {
     padding: 10px 14px;
     resize: vertical;
     height: 90px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 .event_date_time_div {

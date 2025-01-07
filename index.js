@@ -48,7 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
     input_date_time.value = localFormattedTime;
 
 
-
     let clonedEventDetailsContainer = null;
 
     // Function to clone the "event_details_container" element on page load
@@ -393,119 +392,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-function getFormData() {
-    let allFormData = []; // Store data from all forms here
-
-    idsArray.forEach((input) => {
-        const form = document.getElementById(`form_${input}`); // Get the form element
-        if (!form) {
-            console.error(`Form with ID form_${input} not found.`);
-            return; // Skip this form if not found
-        }
-
-        const formData = new FormData(form); // Create a FormData object
-        let formObj = {}; // Store key-value pairs for this form
-
-        // Convert FormData to a regular object
-        formData.forEach((value, key) => {
-            if (key.startsWith('event_date_time')) {
-                // Convert to user's local time
-                const userLocalDate = new Date(value); // Assume value is a timestamp
-                const userOffset = userLocalDate.getTimezoneOffset(); // Offset in minutes
-                userLocalDate.setMinutes(userLocalDate.getMinutes() - userOffset); // Adjust to user's local timezone
-                formObj[key] = userLocalDate.toISOString(); // Store the adjusted value
-            } else {
-                formObj[key] = value; // Keep other values as-is
-            }
-        });
-
-        allFormData.push({ eventId: `${input}`, data: formObj }); // Add this form's data to the array
-    });
-
-    console.log('All Forms Data (Adjusted to User Local Time):', allFormData);
-
-    const keyPattern = /^event_date_time/;
-    let occurrenceCountArray = [];
-
-    allFormData.forEach(item => {
-        let occurrenceCount = 0;
-        if (item.data) { // Check if 'data' object exists
-            Object.keys(item.data).forEach(key => {
-                if (key.startsWith('event_date_time')) { // Check for keys matching the pattern
-                    occurrenceCount++;
-                }
-            });
-        }
-        occurrenceCountArray.push({ 'eventId': item.eventId, 'count': occurrenceCount });
-    });
-
-    let lastArray = [];
-    console.log('occurrenceCount::::::', occurrenceCountArray);
-    allFormData.forEach((item, index) => {
-        if (item.eventId == occurrenceCountArray[index].eventId) {
-            const length = occurrenceCountArray[index].count; // Get the count of occurrences
-            for (let ind = 0; ind < length; ind++) {
-                if (ind == 0) {
-                    // For the first occurrence, use "_1" keys
-                    const dateStart = new Date(item.data[`event_date_time_${index + 1}`]);
-                    lastArray.push({
-                        title: item.data[`event_name_${index + 1}`],
-                        description: item.data[`event_description_${index + 1}`],
-                        start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
-                        location: item.data[`event_location_${index + 1}`],
-                        duration: { hours: `${item.data[`event_hour_${index + 1}`]}`, minutes: `${item.data[`event_min_${index + 1}`]}` }
-                    });
-                } else {
-                    // Dynamically construct keys for other occurrences
-                    const dateStart = new Date(item.data[`event_date_time_${index + 1}_${ind}`]);
-                    lastArray.push({
-                        title: item.data[`event_name_${index + 1}`],
-                        description: item.data[`event_description_${index + 1}_${ind}`],
-                        start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
-                        location: item.data[`event_location_${index + 1}_${ind}`],
-                        duration: { hours: `${item.data[`event_hour_${index + 1}_${ind}`]}`, minutes: `${item.data[`event_min_${index + 1}_${ind}`]}` }
-                    });
-                }
-            }
-        }
-    });
-
-    console.log('lastArray (Adjusted):', lastArray);
-
-    function _save(event) {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        fetch('https://mats.demandtech.org/saveICS', {
-            method: "POST",
-            headers: myHeaders,
-            redirect: "follow",
-            body: JSON.stringify(event)
-        })
-            .then((response) => {
-                return response.text();
-            })
-            .then((result) => {
-                console.log(result);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    }
-
-    try {
-        let event = [{ email: "deepak.gaud@growthnatives.com", data: lastArray }];
-        console.log('event to save::::::', event);
-        _save(event);
-    } catch (e) {
-        console.error(e);
-    }
-}
-
-
-
 // function getFormData() {
 //     let allFormData = []; // Store data from all forms here
-//     // console.log('idArray::::::', idsArray);
 
 //     idsArray.forEach((input) => {
 //         const form = document.getElementById(`form_${input}`); // Get the form element
@@ -519,13 +407,22 @@ function getFormData() {
 
 //         // Convert FormData to a regular object
 //         formData.forEach((value, key) => {
-//             formObj[key] = value;
+//             if (key.startsWith('event_date_time')) {
+//                 // Convert to user's local time
+//                 const userLocalDate = new Date(value); // Assume value is a timestamp
+//                 const userOffset = userLocalDate.getTimezoneOffset(); // Offset in minutes
+//                 userLocalDate.setMinutes(userLocalDate.getMinutes() - userOffset); // Adjust to user's local timezone
+//                 formObj[key] = userLocalDate.toISOString(); // Store the adjusted value
+//             } else {
+//                 formObj[key] = value; // Keep other values as-is
+//             }
 //         });
 
 //         allFormData.push({ eventId: `${input}`, data: formObj }); // Add this form's data to the array
 //     });
 
-//     console.log('All Forms Data:', allFormData); // Display all form data
+//     console.log('All Forms Data (Adjusted to User Local Time):', allFormData);
+
 //     const keyPattern = /^event_date_time/;
 //     let occurrenceCountArray = [];
 
@@ -571,8 +468,9 @@ function getFormData() {
 //             }
 //         }
 //     });
-//     //lastArray.email = "Deepak.gaud@growthnatives.com";
-//     console.log('lastArray::::::', lastArray);
+
+//     console.log('lastArray (Adjusted):', lastArray);
+
 //     function _save(event) {
 //         const myHeaders = new Headers();
 //         myHeaders.append("Content-Type", "application/json");
@@ -583,25 +481,126 @@ function getFormData() {
 //             body: JSON.stringify(event)
 //         })
 //             .then((response) => {
-//                 response.text();
+//                 return response.text();
 //             })
 //             .then((result) => {
 //                 console.log(result);
 //             })
 //             .catch((error) => {
-//                 console.log(error);
-//             })
+//                 console.error(error);
+//             });
 //     }
-
 
 //     try {
 //         let event = [{ email: "deepak.gaud@growthnatives.com", data: lastArray }];
-//         console.log('event::::::', event);
+//         console.log('event to save::::::', event);
 //         _save(event);
 //     } catch (e) {
-//         console.log(e);
+//         console.error(e);
 //     }
 // }
+
+
+
+function getFormData() {
+    let allFormData = []; // Store data from all forms here
+    // console.log('idArray::::::', idsArray);
+
+    idsArray.forEach((input) => {
+        const form = document.getElementById(`form_${input}`); // Get the form element
+        if (!form) {
+            console.error(`Form with ID form_${input} not found.`);
+            return; // Skip this form if not found
+        }
+
+        const formData = new FormData(form); // Create a FormData object
+        let formObj = {}; // Store key-value pairs for this form
+
+        // Convert FormData to a regular object
+        formData.forEach((value, key) => {
+            formObj[key] = value;
+        });
+
+        allFormData.push({ eventId: `${input}`, data: formObj }); // Add this form's data to the array
+    });
+
+    console.log('All Forms Data:', allFormData); // Display all form data
+    const keyPattern = /^event_date_time/;
+    let occurrenceCountArray = [];
+
+    allFormData.forEach(item => {
+        let occurrenceCount = 0;
+        if (item.data) { // Check if 'data' object exists
+            Object.keys(item.data).forEach(key => {
+                if (key.startsWith('event_date_time')) { // Check for keys matching the pattern
+                    occurrenceCount++;
+                }
+            });
+        }
+        occurrenceCountArray.push({ 'eventId': item.eventId, 'count': occurrenceCount });
+    });
+
+    let lastArray = [];
+    console.log('occurrenceCount::::::', occurrenceCountArray);
+    allFormData.forEach((item, index) => {
+        if (item.eventId == occurrenceCountArray[index].eventId) {
+            const length = occurrenceCountArray[index].count; // Get the count of occurrences
+            for (let ind = 0; ind < length; ind++) {
+                if (ind == 0) {
+                    // For the first occurrence, use "_1" keys
+                    const dateStart = new Date(item.data[`event_date_time_${index + 1}`]);
+                    lastArray.push({
+                        title: item.data[`event_name_${index + 1}`],
+                        description: item.data[`event_description_${index + 1}`],
+                        start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
+                        location: item.data[`event_location_${index + 1}`],
+                        duration: { hours: `${item.data[`event_hour_${index + 1}`]}`, minutes: `${item.data[`event_min_${index + 1}`]}` }
+                    });
+                } else {
+                    // Dynamically construct keys for other occurrences
+                    const dateStart = new Date(item.data[`event_date_time_${index + 1}_${ind}`]);
+                    lastArray.push({
+                        title: item.data[`event_name_${index + 1}`],
+                        description: item.data[`event_description_${index + 1}_${ind}`],
+                        start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
+                        location: item.data[`event_location_${index + 1}_${ind}`],
+                        duration: { hours: `${item.data[`event_hour_${index + 1}_${ind}`]}`, minutes: `${item.data[`event_min_${index + 1}_${ind}`]}` }
+                    });
+                }
+            }
+        }
+    });
+    //lastArray.email = "Deepak.gaud@growthnatives.com";
+    console.log('lastArray::::::', lastArray);
+    function _save(event) {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        fetch('https://mats.demandtech.org/saveICS', {
+            method: "POST",
+            headers: myHeaders,
+            redirect: "follow",
+            body: JSON.stringify(event)
+        })
+            .then((response) => {
+                response.text();
+            })
+            .then((result) => {
+                console.log(result);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
+
+    try {
+        let event = [{ email: "deepak.gaud@growthnatives.com", data: lastArray }];
+        console.log('event::::::', event);
+        _save(event);
+    } catch (e) {
+        console.log(e);
+    }
+}
 
 
 // Add event listener to the button
