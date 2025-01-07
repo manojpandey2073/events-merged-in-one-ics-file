@@ -504,35 +504,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function getFormData() {
     let allFormData = []; // Store data from all forms here
-    // console.log('idArray::::::', idsArray);
-
     idsArray.forEach((input) => {
-        const form = document.getElementById(`form_${input}`); // Get the form element
+        const form = document.getElementById(`form_${input}`);
         if (!form) {
             console.error(`Form with ID form_${input} not found.`);
-            return; // Skip this form if not found
+            return;
         }
 
-        const formData = new FormData(form); // Create a FormData object
-        let formObj = {}; // Store key-value pairs for this form
+        const formData = new FormData(form);
+        let formObj = {};
 
-        // Convert FormData to a regular object
         formData.forEach((value, key) => {
             formObj[key] = value;
         });
 
-        allFormData.push({ eventId: `${input}`, data: formObj }); // Add this form's data to the array
+        allFormData.push({ eventId: `${input}`, data: formObj });
     });
 
-    console.log('All Forms Data:', allFormData); // Display all form data
+    console.log('All Forms Data:', allFormData);
+
     const keyPattern = /^event_date_time/;
     let occurrenceCountArray = [];
 
     allFormData.forEach(item => {
         let occurrenceCount = 0;
-        if (item.data) { // Check if 'data' object exists
+        if (item.data) {
             Object.keys(item.data).forEach(key => {
-                if (key.startsWith('event_date_time')) { // Check for keys matching the pattern
+                if (key.startsWith('event_date_time')) {
                     occurrenceCount++;
                 }
             });
@@ -541,66 +539,53 @@ function getFormData() {
     });
 
     let lastArray = [];
-    console.log('occurrenceCount::::::', occurrenceCountArray);
+    console.log('occurrenceCount:', occurrenceCountArray);
     allFormData.forEach((item, index) => {
-        if (item.eventId == occurrenceCountArray[index].eventId) {
-            const length = occurrenceCountArray[index].count; // Get the count of occurrences
+        if (item.eventId === occurrenceCountArray[index].eventId) {
+            const length = occurrenceCountArray[index].count;
             for (let ind = 0; ind < length; ind++) {
-                if (ind == 0) {
-                    // For the first occurrence, use "_1" keys
-                    const dateStart = new Date(item.data[`event_date_time_${index + 1}`]);
-                    lastArray.push({
-                        title: item.data[`event_name_${index + 1}`],
-                        description: item.data[`event_description_${index + 1}`],
-                        start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
-                        location: item.data[`event_location_${index + 1}`],
-                        duration: { hours: `${item.data[`event_hour_${index + 1}`]}`, minutes: `${item.data[`event_min_${index + 1}`]}` }
-                    });
-                } else {
-                    // Dynamically construct keys for other occurrences
-                    const dateStart = new Date(item.data[`event_date_time_${index + 1}_${ind}`]);
-                    lastArray.push({
-                        title: item.data[`event_name_${index + 1}`],
-                        description: item.data[`event_description_${index + 1}_${ind}`],
-                        start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
-                        location: item.data[`event_location_${index + 1}_${ind}`],
-                        duration: { hours: `${item.data[`event_hour_${index + 1}_${ind}`]}`, minutes: `${item.data[`event_min_${index + 1}_${ind}`]}` }
-                    });
-                }
+                const dateStart = new Date(item.data[`event_date_time_${index + 1}${ind === 0 ? '' : `_${ind}`}`]);
+                lastArray.push({
+                    title: item.data[`event_name_${index + 1}`],
+                    description: item.data[`event_description_${index + 1}${ind === 0 ? '' : `_${ind}`}`],
+                    start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
+                    location: item.data[`event_location_${index + 1}${ind === 0 ? '' : `_${ind}`}`],
+                    duration: {
+                        hours: `${item.data[`event_hour_${index + 1}${ind === 0 ? '' : `_${ind}`}`]}`,
+                        minutes: `${item.data[`event_min_${index + 1}${ind === 0 ? '' : `_${ind}`}`]}`
+                    }
+                });
             }
         }
     });
-    //lastArray.email = "Deepak.gaud@growthnatives.com";
-    console.log('lastArray::::::', lastArray);
-    function _save(event) {
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        fetch('https://mats.demandtech.org/saveICS', {
-            method: "POST",
-            headers: myHeaders,
-            redirect: "follow",
-            body: JSON.stringify(event)
-        })
-            .then((response) => {
-                response.text();
-            })
-            .then((result) => {
-                console.log(result);
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-    }
 
+    console.log('lastArray:', lastArray);
+
+    async function saveEvent(event) {
+        try {
+            const response = await fetch('https://<your-render-server-url>/saveICS', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(event)
+            });
+            const result = await response.json();
+            console.log('Server Response:', result);
+        } catch (error) {
+            console.error('Error saving data:', error);
+        }
+    }
 
     try {
-        let event = [{ email: "deepak.gaud@growthnatives.com", data: lastArray }];
-        console.log('event::::::', event);
-        _save(event);
+        const event = [{ email: "your-email@example.com", data: lastArray }];
+        console.log('Sending event:', event);
+        saveEvent(event);
     } catch (e) {
-        console.log(e);
+        console.log('Error:', e);
     }
 }
+
 
 
 // Add event listener to the button
