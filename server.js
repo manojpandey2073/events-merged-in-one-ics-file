@@ -2,12 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
-
+const PORT = process.env.PORT || 10000;
 // Middleware to parse JSON
 app.use(bodyParser.json());
 
-app.post('/saveICS', (req, res) => {
+app.post('/', (req, res) => {
     const { email, data } = req.body;
 
     console.log('Received data:', { email, data });
