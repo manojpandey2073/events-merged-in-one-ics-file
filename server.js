@@ -3,18 +3,12 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 10000;
-<<<<<<< HEAD
-=======
 
->>>>>>> b1eaa3e5993e199020b5a7bc51ccfba2ed96ae46
 // Middleware to parse JSON
 app.use(bodyParser.json());
 
 app.post('/', (req, res) => {
-<<<<<<< HEAD
-=======
      res.sendFile(path.join(__dirname, 'index.html'));
->>>>>>> b1eaa3e5993e199020b5a7bc51ccfba2ed96ae46
     const { email, data } = req.body;
 
     console.log('Received data:', { email, data });
