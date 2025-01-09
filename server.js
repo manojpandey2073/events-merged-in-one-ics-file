@@ -1,25 +1,27 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+
 const app = express();
 const PORT = process.env.PORT || 10000;
-<<<<<<< HEAD
-=======
 
->>>>>>> b1eaa3e5993e199020b5a7bc51ccfba2ed96ae46
 // Middleware to parse JSON
 app.use(bodyParser.json());
 
-app.post('/', (req, res) => {
-<<<<<<< HEAD
-=======
-     res.sendFile(path.join(__dirname, 'index.html'));
->>>>>>> b1eaa3e5993e199020b5a7bc51ccfba2ed96ae46
+// Serve static files (like index.html)
+app.use(express.static(path.join(__dirname)));
+
+// Route to serve the HTML file
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// API route to handle POST requests
+app.post('/submit', (req, res) => {
     const { email, data } = req.body;
 
     console.log('Received data:', { email, data });
 
-    // Mock ICS file creation or data handling
     try {
         // Process the data as needed
         console.log('Processing data...');
@@ -32,6 +34,7 @@ app.post('/', (req, res) => {
     }
 });
 
+// Start the server
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
