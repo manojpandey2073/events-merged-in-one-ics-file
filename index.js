@@ -115,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             clonedSection.remove();
+            enableAddMoreButton();
         });
 
         clonedSection.appendChild(crossIcon);
