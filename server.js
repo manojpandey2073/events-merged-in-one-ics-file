@@ -1,64 +1,59 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const ics = require('ics');
-const fs = require('fs');
 const path = require('path');
+const ics = require('ics'); // If you use the ics library for ICS file generation
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
-// Middleware to parse JSON data
+// Middleware to parse JSON requests
 app.use(bodyParser.json());
 
-// Endpoint to process data and generate merged ICS file
-app.post('/saveICS', async (req, res) => {
-    const { email, data } = req.body; // Extract the email and event data
+// Serve static files (e.g., CSS, JS, HTML) from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
 
-    if (!data || !Array.isArray(data)) {
-        return res.status(400).json({ error: 'Invalid event data' });
-    }
-
-    try {
-        const events = data.map((event) => ({
-            title: event.title || 'Untitled Event',
-            description: event.description || '',
-            start: event.start || [],
-            duration: event.duration || { hours: 1, minutes: 0 },
-            location: event.location || '',
-        }));
-
-        // Generate ICS file
-        ics.createEvents(events, (error, value) => {
-            if (error) {
-                console.error('Error generating ICS:', error);
-                return res.status(500).json({ error: 'Failed to generate ICS file' });
-            }
-
-            // Save the ICS file to the server
-            const fileName = `events_${Date.now()}.ics`;
-            const filePath = path.join(__dirname, 'public', fileName);
-
-            fs.writeFile(filePath, value, (err) => {
-                if (err) {
-                    console.error('Error saving ICS file:', err);
-                    return res.status(500).json({ error: 'Failed to save ICS file' });
-                }
-
-                // Respond with the download link
-                const fileUrl = `${req.protocol}://${req.get('host')}/public/${fileName}`;
-                res.status(200).json({ message: 'ICS file created successfully', fileUrl });
-            });
-        });
-    } catch (error) {
-        console.error('Error processing request:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+// Serve index.html on the root route
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Serve static files (like the generated ICS files)
-app.use('/public', express.static(path.join(__dirname, 'public')));
+// API endpoint to handle form submissions and generate ICS file
+app.post('/saveICS', (req, res) => {
+  try {
+    const { email, data } = req.body;
+
+    // Log received data
+    console.log('Received data:', { email, data });
+
+    // Example of generating an ICS file (adjust based on your use case)
+    const events = data.map(event => ({
+      title: event.title,
+      description: event.description,
+      location: event.location,
+      start: event.start,
+      duration: event.duration,
+    }));
+
+    const icsData = events.map(event => {
+      const result = ics.createEvent(event);
+      if (result.error) {
+        console.error('Error creating ICS event:', result.error);
+        return null;
+      }
+      return result.value;
+    }).filter(Boolean).join('\n'); // Combine all ICS events
+
+    // Send the ICS data as a file response
+    res.setHeader('Content-Disposition', 'attachment; filename="events.ics"');
+    res.setHeader('Content-Type', 'text/calendar');
+    res.status(200).send(icsData);
+  } catch (error) {
+    console.error('Error processing request:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 
 // Start the server
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server running on http://localhost:${PORT}`);
 });
