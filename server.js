@@ -22,18 +22,32 @@ app.post('/saveICS', (req, res) => {
   try {
     const { email, data } = req.body;
 
-    // Log received data
+    // Ensure email and data are present
+    if (!email || !data || !Array.isArray(data)) {
+      return res.status(400).json({ message: 'Invalid request: Missing email or data' });
+    }
+
+    // Log received data for debugging
     console.log('Received data:', { email, data });
 
     // Example of generating an ICS file (adjust based on your use case)
-    const events = data.map(event => ({
-      title: event.title,
-      description: event.description,
-      location: event.location,
-      start: event.start,
-      duration: event.duration,
-    }));
+    const events = data.map(event => {
+      // Validate the start date
+      if (!Array.isArray(event.start) || event.start.length !== 5) {
+        console.error('Invalid start date format for event:', event);
+        return null;
+      }
 
+      return {
+        title: event.title,
+        description: event.description,
+        location: event.location,
+        start: event.start, // Make sure this is in the format expected by ics
+        duration: event.duration,
+      };
+    }).filter(Boolean); // Remove invalid events
+
+    // Generate ICS content for each valid event
     const icsData = events.map(event => {
       const result = ics.createEvent(event);
       if (result.error) {
@@ -41,7 +55,12 @@ app.post('/saveICS', (req, res) => {
         return null;
       }
       return result.value;
-    }).filter(Boolean).join('\n'); // Combine all ICS events
+    }).filter(Boolean).join('\n'); // Combine all ICS events into one file
+
+    // If no valid events, return an error
+    if (!icsData) {
+      return res.status(400).json({ message: 'No valid events to create ICS file.' });
+    }
 
     // Send the ICS data as a file response
     res.setHeader('Content-Disposition', 'attachment; filename="events.ics"');
