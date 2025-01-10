@@ -1,6 +1,7 @@
 {
   "license": "MIT",
   "dependencies": {
+    "dirname": "^0.1.0",
     "express": "^4.21.2",
     "ics": "^3.8.1",
     "path": "^0.12.7"

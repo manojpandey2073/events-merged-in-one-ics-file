@@ -393,145 +393,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-// function getFormData() {
-//     let allFormData = []; // Store data from all forms here
-
-//     idsArray.forEach((input) => {
-//         const form = document.getElementById(`form_${input}`); // Get the form element
-//         if (!form) {
-//             console.error(`Form with ID form_${input} not found.`);
-//             return; // Skip this form if not found
-//         }
-
-//         const formData = new FormData(form); // Create a FormData object
-//         let formObj = {}; // Store key-value pairs for this form
-
-//         // Convert FormData to a regular object
-//         formData.forEach((value, key) => {
-//             if (key.startsWith('event_date_time')) {
-//                 // Convert to user's local time
-//                 const userLocalDate = new Date(value); // Assume value is a timestamp
-//                 const userOffset = userLocalDate.getTimezoneOffset(); // Offset in minutes
-//                 userLocalDate.setMinutes(userLocalDate.getMinutes() - userOffset); // Adjust to user's local timezone
-//                 formObj[key] = userLocalDate.toISOString(); // Store the adjusted value
-//             } else {
-//                 formObj[key] = value; // Keep other values as-is
-//             }
-//         });
-
-//         allFormData.push({ eventId: `${input}`, data: formObj }); // Add this form's data to the array
-//     });
-
-//     console.log('All Forms Data (Adjusted to User Local Time):', allFormData);
-
-//     const keyPattern = /^event_date_time/;
-//     let occurrenceCountArray = [];
-
-//     allFormData.forEach(item => {
-//         let occurrenceCount = 0;
-//         if (item.data) { // Check if 'data' object exists
-//             Object.keys(item.data).forEach(key => {
-//                 if (key.startsWith('event_date_time')) { // Check for keys matching the pattern
-//                     occurrenceCount++;
-//                 }
-//             });
-//         }
-//         occurrenceCountArray.push({ 'eventId': item.eventId, 'count': occurrenceCount });
-//     });
-
-//     let lastArray = [];
-//     console.log('occurrenceCount::::::', occurrenceCountArray);
-//     allFormData.forEach((item, index) => {
-//         if (item.eventId == occurrenceCountArray[index].eventId) {
-//             const length = occurrenceCountArray[index].count; // Get the count of occurrences
-//             for (let ind = 0; ind < length; ind++) {
-//                 if (ind == 0) {
-//                     // For the first occurrence, use "_1" keys
-//                     const dateStart = new Date(item.data[`event_date_time_${index + 1}`]);
-//                     lastArray.push({
-//                         title: item.data[`event_name_${index + 1}`],
-//                         description: item.data[`event_description_${index + 1}`],
-//                         start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
-//                         location: item.data[`event_location_${index + 1}`],
-//                         duration: { hours: `${item.data[`event_hour_${index + 1}`]}`, minutes: `${item.data[`event_min_${index + 1}`]}` }
-//                     });
-//                 } else {
-//                     // Dynamically construct keys for other occurrences
-//                     const dateStart = new Date(item.data[`event_date_time_${index + 1}_${ind}`]);
-//                     lastArray.push({
-//                         title: item.data[`event_name_${index + 1}`],
-//                         description: item.data[`event_description_${index + 1}_${ind}`],
-//                         start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
-//                         location: item.data[`event_location_${index + 1}_${ind}`],
-//                         duration: { hours: `${item.data[`event_hour_${index + 1}_${ind}`]}`, minutes: `${item.data[`event_min_${index + 1}_${ind}`]}` }
-//                     });
-//                 }
-//             }
-//         }
-//     });
-
-//     console.log('lastArray (Adjusted):', lastArray);
-
-//     function _save(event) {
-//         const myHeaders = new Headers();
-//         myHeaders.append("Content-Type", "application/json");
-//         fetch('https://mats.demandtech.org/saveICS', {
-//             method: "POST",
-//             headers: myHeaders,
-//             redirect: "follow",
-//             body: JSON.stringify(event)
-//         })
-//             .then((response) => {
-//                 return response.text();
-//             })
-//             .then((result) => {
-//                 console.log(result);
-//             })
-//             .catch((error) => {
-//                 console.error(error);
-//             });
-//     }
-
-//     try {
-//         let event = [{ email: "deepak.gaud@growthnatives.com", data: lastArray }];
-//         console.log('event to save::::::', event);
-//         _save(event);
-//     } catch (e) {
-//         console.error(e);
-//     }
-// }
-
-
-
 function getFormData() {
     let allFormData = []; // Store data from all forms here
+
     idsArray.forEach((input) => {
-        const form = document.getElementById(`form_${input}`);
+        const form = document.getElementById(`form_${input}`); // Get the form element
         if (!form) {
             console.error(`Form with ID form_${input} not found.`);
-            return;
+            return; // Skip this form if not found
         }
 
-        const formData = new FormData(form);
-        let formObj = {};
+        const formData = new FormData(form); // Create a FormData object
+        let formObj = {}; // Store key-value pairs for this form
 
+        // Convert FormData to a regular object
         formData.forEach((value, key) => {
-            formObj[key] = value;
+            if (key.startsWith('event_date_time')) {
+                // Convert to user's local time
+                const userLocalDate = new Date(value); // Assume value is a timestamp
+                const userOffset = userLocalDate.getTimezoneOffset(); // Offset in minutes
+                userLocalDate.setMinutes(userLocalDate.getMinutes() - userOffset); // Adjust to user's local timezone
+                formObj[key] = userLocalDate.toISOString(); // Store the adjusted value
+            } else {
+                formObj[key] = value; // Keep other values as-is
+            }
         });
 
-        allFormData.push({ eventId: `${input}`, data: formObj });
+        allFormData.push({ eventId: `${input}`, data: formObj }); // Add this form's data to the array
     });
 
-    console.log('All Forms Data:', allFormData);
+    console.log('All Forms Data (Adjusted to User Local Time):', allFormData);
 
     const keyPattern = /^event_date_time/;
     let occurrenceCountArray = [];
 
     allFormData.forEach(item => {
         let occurrenceCount = 0;
-        if (item.data) {
+        if (item.data) { // Check if 'data' object exists
             Object.keys(item.data).forEach(key => {
-                if (key.startsWith('event_date_time')) {
+                if (key.startsWith('event_date_time')) { // Check for keys matching the pattern
                     occurrenceCount++;
                 }
             });
@@ -540,52 +440,68 @@ function getFormData() {
     });
 
     let lastArray = [];
-    console.log('occurrenceCount:', occurrenceCountArray);
+    console.log('occurrenceCount::::::', occurrenceCountArray);
     allFormData.forEach((item, index) => {
-        if (item.eventId === occurrenceCountArray[index].eventId) {
-            const length = occurrenceCountArray[index].count;
+        if (item.eventId == occurrenceCountArray[index].eventId) {
+            const length = occurrenceCountArray[index].count; // Get the count of occurrences
             for (let ind = 0; ind < length; ind++) {
-                const dateStart = new Date(item.data[`event_date_time_${index + 1}${ind === 0 ? '' : `_${ind}`}`]);
-                lastArray.push({
-                    title: item.data[`event_name_${index + 1}`],
-                    description: item.data[`event_description_${index + 1}${ind === 0 ? '' : `_${ind}`}`],
-                    start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
-                    location: item.data[`event_location_${index + 1}${ind === 0 ? '' : `_${ind}`}`],
-                    duration: {
-                        hours: `${item.data[`event_hour_${index + 1}${ind === 0 ? '' : `_${ind}`}`]}`,
-                        minutes: `${item.data[`event_min_${index + 1}${ind === 0 ? '' : `_${ind}`}`]}`
-                    }
-                });
+                if (ind == 0) {
+                    // For the first occurrence, use "_1" keys
+                    const dateStart = new Date(item.data[`event_date_time_${index + 1}`]);
+                    lastArray.push({
+                        title: item.data[`event_name_${index + 1}`],
+                        description: item.data[`event_description_${index + 1}`],
+                        start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
+                        location: item.data[`event_location_${index + 1}`],
+                        duration: { hours: `${item.data[`event_hour_${index + 1}`]}`, minutes: `${item.data[`event_min_${index + 1}`]}` }
+                    });
+                } else {
+                    // Dynamically construct keys for other occurrences
+                    const dateStart = new Date(item.data[`event_date_time_${index + 1}_${ind}`]);
+                    lastArray.push({
+                        title: item.data[`event_name_${index + 1}`],
+                        description: item.data[`event_description_${index + 1}_${ind}`],
+                        start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
+                        location: item.data[`event_location_${index + 1}_${ind}`],
+                        duration: { hours: `${item.data[`event_hour_${index + 1}_${ind}`]}`, minutes: `${item.data[`event_min_${index + 1}_${ind}`]}` }
+                    });
+                }
             }
         }
     });
 
-    console.log('lastArray:', lastArray);
+    console.log('lastArray (Adjusted):', lastArray);
 
-    async function saveEvent(event) {
-        try {
-            const response = await fetch('https://<your-render-server-url>/saveICS', {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(event)
+    function _save(event) {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        fetch('https://mats.demandtech.org/saveICS', {
+            method: "POST",
+            headers: myHeaders,
+            redirect: "follow",
+            body: JSON.stringify(event)
+        })
+            .then((response) => {
+                return response.text();
+            })
+            .then((result) => {
+                console.log(result);
+            })
+            .catch((error) => {
+                console.error(error);
             });
-            const result = await response.json();
-            console.log('Server Response:', result);
-        } catch (error) {
-            console.error('Error saving data:', error);
-        }
     }
 
     try {
-        const event = [{ email: "your-email@example.com", data: lastArray }];
-        console.log('Sending event:', event);
-        saveEvent(event);
+        let event = [{ email: "deepak.gaud@growthnatives.com", data: lastArray }];
+        console.log('event to save::::::', event);
+        _save(event);
     } catch (e) {
-        console.log('Error:', e);
+        console.error(e);
     }
 }
+
+
 
 
 
