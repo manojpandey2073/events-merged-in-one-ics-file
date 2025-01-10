@@ -475,7 +475,7 @@ function getFormData() {
     function _save(event) {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
-        fetch('https://mats.demandtech.org/saveICS', {
+        fetch('https://events-merged-in-one-ics-file-1.onrender.com/saveICS', {
             method: "POST",
             headers: myHeaders,
             redirect: "follow",
