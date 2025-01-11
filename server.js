@@ -50,6 +50,7 @@ app.post('/saveICS', (req, res) => {
     // Generate ICS content for each valid event
     const icsFiles = events.map(event => {
       const result = ics.createEvent(event);
+      console.log(result);
       if (result.error) {
         console.error('Error creating ICS event:', result.error);
         return null;
