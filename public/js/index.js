@@ -493,7 +493,7 @@ function getFormData() {
     }
 
     try {
-        let event = [{ email: "deepak.gaud@growthnatives.com", data: lastArray }];
+        let event = { email: "deepak.gaud@growthnatives.com", data: lastArray };
         console.log('event to save::::::', event);
         _save(event);
     } catch (e) {
