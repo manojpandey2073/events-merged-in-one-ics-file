@@ -453,7 +453,7 @@ function getFormData() {
                         description: item.data[`event_description_${index + 1}`],
                         start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
                         location: item.data[`event_location_${index + 1}`],
-                        duration: { hours: `${item.data[`event_hour_${index + 1}`]}`, minutes: `${item.data[`event_min_${index + 1}`]}` }
+                        duration: { hours: Number(item.data[`event_hour_${index + 1}`]), minutes: Number(item.data[`event_min_${index + 1}`]) }
                     });
                 } else {
                     // Dynamically construct keys for other occurrences
@@ -463,7 +463,7 @@ function getFormData() {
                         description: item.data[`event_description_${index + 1}_${ind}`],
                         start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
                         location: item.data[`event_location_${index + 1}_${ind}`],
-                        duration: { hours: `${item.data[`event_hour_${index + 1}_${ind}`]}`, minutes: `${item.data[`event_min_${index + 1}_${ind}`]}` }
+                        duration: { hours: Number(item.data[`event_hour_${index + 1}_${ind}`]), minutes: Number(item.data[`event_min_${index + 1}_${ind}`]) }
                     });
                 }
             }

@@ -37,7 +37,7 @@ app.post('/saveICS', (req, res) => {
         console.error('Invalid start date format for event:', event);
         return null;
       }
-
+      
       return {
         title: event.title,
         description: event.description,
