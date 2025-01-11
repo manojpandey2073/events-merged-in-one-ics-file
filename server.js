@@ -37,7 +37,7 @@ app.post('/saveICS', (req, res) => {
         console.error('Invalid start date format for event:', event);
         return null;
       }
-      
+
       return {
         title: event.title,
         description: event.description,
@@ -48,24 +48,31 @@ app.post('/saveICS', (req, res) => {
     }).filter(Boolean); // Remove invalid events
 
     // Generate ICS content for each valid event
-    const icsData = events.map(event => {
+    const icsFiles = events.map(event => {
       const result = ics.createEvent(event);
       if (result.error) {
         console.error('Error creating ICS event:', result.error);
         return null;
       }
-      return result.value;
-    }).filter(Boolean).join('\n'); // Combine all ICS events into one file
+      return { title: event.title, content: result.value }; // Save title and content
+    }).filter(Boolean); // Remove invalid events
 
     // If no valid events, return an error
-    if (!icsData) {
+    if (icsFiles.length === 0) {
       return res.status(400).json({ message: 'No valid events to create ICS file.' });
     }
 
+    // For this example, handle the first event's ICS file
+    const { title, content } = icsFiles[0];
+
+    // Set title dynamically for the ICS file
+    const safeTitle = title.replace(/[^a-zA-Z0-9_-]/g, '_'); // Replace unsafe characters
+    const fileName = `${safeTitle}.ics`;
+
     // Send the ICS data as a file response
-    res.setHeader('Content-Disposition', 'attachment; filename="events.ics"');
+    res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
     res.setHeader('Content-Type', 'text/calendar');
-    res.status(200).send(icsData);
+    res.status(200).send(content);
   } catch (error) {
     console.error('Error processing request:', error);
     res.status(500).json({ message: 'Internal Server Error' });
