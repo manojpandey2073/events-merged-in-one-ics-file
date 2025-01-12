@@ -68,7 +68,7 @@ app.post('/saveICS', (req, res) => {
     fs.writeFileSync(filePath, result.value);
 
     // Send the URL back to the client
-    const fileURL = `http://localhost:${PORT}/${fileName}`;
+    const fileURL = `https://events-merged-in-one-ics-file-1.onrender.com/${fileName}`;
     res.status(200).json({ fileURL });
 
   } catch (error) {
