@@ -8,6 +8,9 @@ const PORT = process.env.PORT || 10000;
 // Middleware to parse JSON requests
 app.use(bodyParser.json());
 
+// Serve static files (e.g., CSS, JS, HTML) from the "public" directory
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Serve index.html on the root route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
