@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const ics = require('ics'); // If you use the ics library for ICS file generation
-
+const fs = require('fs'); // For file handling
 const app = express();
 const PORT = process.env.PORT || 10000;
 
@@ -30,7 +30,7 @@ app.post('/saveICS', (req, res) => {
     // Log received data for debugging
     console.log('Received data:', { email, data });
 
-    // Example of generating an ICS file (adjust based on your use case)
+    // Create a list of events to generate the ICS file
     const events = data.map(event => {
       // Validate the start date
       if (!Array.isArray(event.start) || event.start.length !== 5) {
@@ -42,38 +42,39 @@ app.post('/saveICS', (req, res) => {
         title: event.title,
         description: event.description,
         location: event.location,
-        start: event.start, // Make sure this is in the format expected by ics
-        duration: event.duration,
+        start: event.start,
+        duration: {
+          hours: Number(event.duration.hours),
+          minutes: Number(event.duration.minutes)
+        }
       };
     }).filter(Boolean); // Remove invalid events
 
-    // Generate ICS content for each valid event
-    const icsFiles = events.map(event => {
-      const result = ics.createEvent(event);
-      console.log(result);
-      if (result.error) {
-        console.error('Error creating ICS event:', result.error);
-        return null;
-      }
-      return { title: event.title, content: result.value }; // Save title and content
-    }).filter(Boolean); // Remove invalid events
-
-    // If no valid events, return an error
-    if (icsFiles.length === 0) {
+    if (events.length === 0) {
       return res.status(400).json({ message: 'No valid events to create ICS file.' });
     }
 
-    // For this example, handle the first event's ICS file
-    const { title, content } = icsFiles[0];
+    // Generate a single ICS file containing all events
+    const result = ics.createEvents(events);
 
-    // Set title dynamically for the ICS file
-    const safeTitle = title.replace(/[^a-zA-Z0-9_-]/g, '_'); // Replace unsafe characters
-    const fileName = `${safeTitle}.ics`;
+    if (result.error) {
+      console.error('Error creating ICS file:', result.error);
+      return res.status(500).json({ message: 'Failed to create ICS file.' });
+    }
 
-    // Send the ICS data as a file response
-    res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
-    res.setHeader('Content-Type', 'text/calendar');
-    res.status(200).send(content);
+    // Save the ICS file to the server
+    const fileName = `events_${Date.now()}.ics`; // Unique filename
+    const filePath = path.join(__dirname, 'public', fileName);
+
+    fs.writeFileSync(filePath, result.value);
+
+    // Send the file download link to the client
+    const downloadLink = `http://localhost:${PORT}/${fileName}`;
+    res.status(200).json({
+      message: 'ICS file created successfully.',
+      downloadLink
+    });
+
   } catch (error) {
     console.error('Error processing request:', error);
     res.status(500).json({ message: 'Internal Server Error' });
