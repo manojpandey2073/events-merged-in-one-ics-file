@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const ics = require('ics'); // For ICS file generation
-
+const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 10000;
 
