@@ -8,6 +8,11 @@ const PORT = process.env.PORT || 10000;
 // Middleware to parse JSON requests
 app.use(bodyParser.json());
 
+// Serve index.html on the root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });  
+
 // API endpoint to handle form submissions and generate ICS file
 app.post('/saveICS', (req, res) => {
   try {
