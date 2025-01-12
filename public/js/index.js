@@ -486,6 +486,7 @@ function getFormData() {
             })
             .then((result) => {
                 console.log(result);
+                window.location.href = result.fileURL;
             })
             .catch((error) => {
                 console.error(error);

@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const ics = require('ics'); // For ICS file generation
 const path = require('path');
+const fs = require('fs');
 const app = express();
 const PORT = process.env.PORT || 10000;
 
@@ -14,7 +15,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Serve index.html on the root route
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-  });  
+});
 
 // API endpoint to handle form submissions and generate ICS file
 app.post('/saveICS', (req, res) => {
@@ -61,10 +62,14 @@ app.post('/saveICS', (req, res) => {
       return res.status(500).json({ message: 'Failed to create ICS file.' });
     }
 
-    // Set headers to force download
-    res.setHeader('Content-Disposition', 'attachment; filename="events.ics"');
-    res.setHeader('Content-Type', 'text/calendar');
-    res.status(200).send(result.value);
+    // Save the ICS file to a temporary directory
+    const fileName = `events_${Date.now()}.ics`;
+    const filePath = path.join(__dirname, 'public', fileName);
+    fs.writeFileSync(filePath, result.value);
+
+    // Send the URL back to the client
+    const fileURL = `http://localhost:${PORT}/${fileName}`;
+    res.status(200).json({ fileURL });
 
   } catch (error) {
     console.error('Error processing request:', error);
