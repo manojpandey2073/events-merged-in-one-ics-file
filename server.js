@@ -57,8 +57,9 @@ app.post('/saveICS', (req, res) => {
 
     const filePath = path.join(__dirname, 'public', 'events.ics');
     fs.writeFileSync(filePath, result.value); // Save the ICS file
-
-    res.status(200).json({ fileURL: `/events.ics` }); // Send URL for download
+    const baseUrl = `${req.protocol}://${req.headers.host}`;
+    const fileURL = `${baseUrl}/events.ics`;
+    res.status(200).json({ fileURL: fileURL }); // Send URL for download
   } catch (error) {
     console.error('Error processing request:', error);
     res.status(500).json({ message: 'Internal Server Error' });
