@@ -407,17 +407,28 @@ function getFormData() {
         let formObj = {}; // Store key-value pairs for this form
 
         // Convert FormData to a regular object
+        // formData.forEach((value, key) => {
+        //     if (key.startsWith('event_date_time')) {
+        //         // Convert to user's local time
+        //         const userLocalDate = new Date(value); // Assume value is a timestamp
+        //         const userOffset = userLocalDate.getTimezoneOffset(); // Offset in minutes
+        //         userLocalDate.setMinutes(userLocalDate.getMinutes() - userOffset); // Adjust to user's local timezone
+        //         formObj[key] = userLocalDate.toISOString(); // Store the adjusted value
+        //     } else {
+        //         formObj[key] = value; // Keep other values as-is
+        //     }
+        // });
+
         formData.forEach((value, key) => {
             if (key.startsWith('event_date_time')) {
-                // Convert to user's local time
-                const userLocalDate = new Date(value); // Assume value is a timestamp
-                const userOffset = userLocalDate.getTimezoneOffset(); // Offset in minutes
-                userLocalDate.setMinutes(userLocalDate.getMinutes() - userOffset); // Adjust to user's local timezone
-                formObj[key] = userLocalDate.toISOString(); // Store the adjusted value
+                const userLocalDate = new Date(value); // Assume value is in user's local time
+                const utcDate = new Date(userLocalDate.getTime() + userLocalDate.getTimezoneOffset() * 60000); // Convert to UTC
+                formObj[key] = utcDate.toISOString(); // Store in ISO format for server
             } else {
                 formObj[key] = value; // Keep other values as-is
             }
         });
+
 
         allFormData.push({ eventId: `${input}`, data: formObj }); // Add this form's data to the array
     });
@@ -457,14 +468,15 @@ function getFormData() {
                     });
                 } else {
                     // Dynamically construct keys for other occurrences
-                    const dateStart = new Date(item.data[`event_date_time_${index + 1}_${ind}`]);
+                    const dateStart = new Date(item.data[`event_date_time_${index + 1}`]); // Ensure this is in UTC
                     lastArray.push({
                         title: item.data[`event_name_${index + 1}`],
-                        description: item.data[`event_description_${index + 1}_${ind}`],
-                        start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
-                        location: item.data[`event_location_${index + 1}_${ind}`],
-                        duration: { hours: Number(item.data[`event_hour_${index + 1}_${ind}`]), minutes: Number(item.data[`event_min_${index + 1}_${ind}`]) }
+                        description: item.data[`event_description_${index + 1}`],
+                        start: [dateStart.getUTCFullYear(), dateStart.getUTCMonth() + 1, dateStart.getUTCDate(), dateStart.getUTCHours(), dateStart.getUTCMinutes()],
+                        location: item.data[`event_location_${index + 1}`],
+                        duration: { hours: Number(item.data[`event_hour_${index + 1}`]), minutes: Number(item.data[`event_min_${index + 1}`]) }
                     });
+
                 }
             }
         }
@@ -486,14 +498,9 @@ function getFormData() {
             })
             .then((result) => {
                 console.log(result);
-                const anchor = document.createElement('a');
-                anchor.href = result.fileURL;
-                anchor.download = 'event.ics';
-
-                document.body.appendChild(anchor);
-                anchor.click();
                
-                
+
+
             })
             .catch((error) => {
                 console.error(error);
