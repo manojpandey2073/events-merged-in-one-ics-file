@@ -402,3 +402,9 @@ label {
 .huddle_full {
     display: block;
 }
+
+@media(max-width:767px){
+    .event_organiser_details{
+        flex-wrap: wrap;
+    }
+}
