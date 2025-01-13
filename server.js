@@ -22,17 +22,11 @@ app.post('/saveICS', (req, res) => {
   try {
     const { email, data } = req.body;
 
-    // Ensure email and data are present
     if (!email || !data || !Array.isArray(data)) {
       return res.status(400).json({ message: 'Invalid request: Missing email or data' });
     }
 
-    // Log received data for debugging
-    console.log('Received data:', { email, data });
-
-    // Create a list of events to generate the ICS file
     const events = data.map(event => {
-      // Validate the start date
       if (!Array.isArray(event.start) || event.start.length !== 5) {
         console.error('Invalid start date format for event:', event);
         return null;
@@ -45,16 +39,15 @@ app.post('/saveICS', (req, res) => {
         start: event.start,
         duration: {
           hours: Number(event.duration.hours),
-          minutes: Number(event.duration.minutes)
-        }
+          minutes: Number(event.duration.minutes),
+        },
       };
-    }).filter(Boolean); // Remove invalid events
+    }).filter(Boolean);
 
     if (events.length === 0) {
       return res.status(400).json({ message: 'No valid events to create ICS file.' });
     }
 
-    // Generate a single ICS file containing all events
     const result = ics.createEvents(events);
 
     if (result.error) {
@@ -62,13 +55,16 @@ app.post('/saveICS', (req, res) => {
       return res.status(500).json({ message: 'Failed to create ICS file.' });
     }
 
-    res.status(200).json({ result });
+    const filePath = path.join(__dirname, 'public', 'events.ics');
+    fs.writeFileSync(filePath, result.value); // Save the ICS file
 
+    res.status(200).json({ fileURL: `/events.ics` }); // Send URL for download
   } catch (error) {
     console.error('Error processing request:', error);
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
+
 
 // Start the server
 app.listen(PORT, () => {

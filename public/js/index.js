@@ -500,7 +500,6 @@ function getFormData() {
                 console.log(result);
                
 
-
             })
             .catch((error) => {
                 console.error(error);
