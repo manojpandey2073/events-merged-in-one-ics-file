@@ -494,7 +494,7 @@ function getFormData() {
             body: JSON.stringify(event)
         })
             .then((response) => {
-                return response.text();
+                return response.json();
             })
             .then((result) => {
                 console.log(result);
