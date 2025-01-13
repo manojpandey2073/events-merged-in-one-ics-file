@@ -487,7 +487,7 @@ function getFormData() {
             .then((result) => {
                 console.log(result);
                 const anchor = document.createElement('a');
-                anchor.href = fileURL;
+                anchor.href = result.fileURL;
                 anchor.download = 'event.ics';
 
                 document.body.appendChild(anchor);
