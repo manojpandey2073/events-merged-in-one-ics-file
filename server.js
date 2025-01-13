@@ -41,6 +41,10 @@ app.post('/saveICS', (req, res) => {
           hours: Number(event.duration.hours),
           minutes: Number(event.duration.minutes),
         },
+        organiser: {
+          name: event.organizer.name,
+          email: event.organiser.email
+        },
       };
     }).filter(Boolean);
 
