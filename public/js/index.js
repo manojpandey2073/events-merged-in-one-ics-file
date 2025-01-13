@@ -1,7 +1,7 @@
 let idsArray = [1];
-let time_zone_name=(Intl.DateTimeFormat().resolvedOptions().timeZone);
-let time_zone_offset= new Date().toLocaleTimeString('en-us',{timeZoneName:'short'}).split(' ')[2];
-let user_time_zone= `${time_zone_name} ${time_zone_offset}`;
+let time_zone_name = (Intl.DateTimeFormat().resolvedOptions().timeZone);
+let time_zone_offset = new Date().toLocaleTimeString('en-us', { timeZoneName: 'short' }).split(' ')[2];
+let user_time_zone = `${time_zone_name} ${time_zone_offset}`;
 console.log(user_time_zone);
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const clonedHuddleRow = huddleRow.cloneNode(true);
         const inputs = clonedHuddleRow.querySelectorAll('input, textarea, select');
         const currentCounter = parseInt(parentContainer.getAttribute('data-counter'), 10) || 0;
-       
+
         inputs.forEach(input => {
             const originalId = input.id || 'input'; // Fallback for elements without IDs
             const originalName = input.name || 'input';
@@ -486,7 +486,14 @@ function getFormData() {
             })
             .then((result) => {
                 console.log(result);
-                window.location.href = result.fileURL;
+                const anchor = document.createElement('a');
+                anchor.href = url;
+                anchor.download = fileURL;
+
+                document.body.appendChild(anchor);
+                anchor.click();
+                document.body.removeChild(anchor);
+                
             })
             .catch((error) => {
                 console.error(error);
