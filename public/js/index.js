@@ -492,7 +492,7 @@ function getFormData() {
 
                 document.body.appendChild(anchor);
                 anchor.click();
-                document.body.removeChild(anchor);
+               
                 
             })
             .catch((error) => {
