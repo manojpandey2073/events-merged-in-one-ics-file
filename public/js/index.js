@@ -498,6 +498,16 @@ function getFormData() {
             })
             .then((result) => {
                 console.log(result);
+                if (result.fileURL) {
+                    const anchor = document.createElement('a');
+                    anchor.href = data.fileURL;
+                    anchor.download = 'events.ics';
+                    document.body.appendChild(anchor);
+                    anchor.click();
+                    document.body.removeChild(anchor);
+                } else {
+                    console.error('File URL not found in response');
+                }
                
 
             })
