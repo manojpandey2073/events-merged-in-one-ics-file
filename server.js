@@ -62,13 +62,26 @@ app.post('/saveICS', (req, res) => {
       return res.status(500).json({ message: 'Failed to create ICS file.' });
     }
 
-    // Save the ICS file to a temporary directory
+    // Save the ICS file to the public directory
     const fileName = `events_${Date.now()}.ics`;
     const filePath = path.join(__dirname, 'public', fileName);
+
+    console.log('Saving ICS file to:', filePath);
+
     fs.writeFileSync(filePath, result.value);
+
+    // Verify file existence
+    if (!fs.existsSync(filePath)) {
+      console.error('File not saved successfully:', filePath);
+      return res.status(500).json({ message: 'Failed to save ICS file.' });
+    }
+
+    console.log('File saved successfully:', filePath);
 
     // Send the URL back to the client
     const fileURL = `http://localhost:${PORT}/${fileName}`;
+    console.log('Generated file URL:', fileURL);
+
     res.status(200).json({ fileURL });
 
   } catch (error) {
