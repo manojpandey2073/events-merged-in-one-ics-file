@@ -327,7 +327,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 const span = document.createElement('span');
                 span.classList.add('minimized_date_span');
-                span.innerHTML = `${formatted_date} ( ${formatted_time_12hrs} )`;
+                span.innerHTML = `${formatted_date} | ${formatted_time_12hrs}`;
                 minimizedDate.appendChild(span);
             });
         } else {
@@ -407,17 +407,6 @@ function getFormData() {
         let formObj = {}; // Store key-value pairs for this form
 
         // Convert FormData to a regular object
-        // formData.forEach((value, key) => {
-        //     if (key.startsWith('event_date_time')) {
-        //         // Convert to user's local time
-        //         const userLocalDate = new Date(value); // Assume value is a timestamp
-        //         const userOffset = userLocalDate.getTimezoneOffset(); // Offset in minutes
-        //         userLocalDate.setMinutes(userLocalDate.getMinutes() - userOffset); // Adjust to user's local timezone
-        //         formObj[key] = userLocalDate.toISOString(); // Store the adjusted value
-        //     } else {
-        //         formObj[key] = value; // Keep other values as-is
-        //     }
-        // });
 
         formData.forEach((value, key) => {
             if (key.startsWith('event_date_time')) {
@@ -433,7 +422,7 @@ function getFormData() {
         allFormData.push({ eventId: `${input}`, data: formObj }); // Add this form's data to the array
     });
 
-    console.log('All Forms Data (Adjusted to User Local Time):', allFormData);
+    console.log('All Forms Data:', allFormData);
 
     const keyPattern = /^event_date_time/;
     let occurrenceCountArray = [];
