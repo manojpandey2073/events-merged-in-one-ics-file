@@ -459,6 +459,7 @@ function getFormData() {
                 } else {
                     // Dynamically construct keys for other occurrences
                     const dateStart = new Date(item.data[`event_date_time_${index + 1}`]); // Ensure this is in UTC
+                    console.log(dateStart);
                     lastArray.push({
                         title: item.data[`event_name_${index + 1}`],
                         description: item.data[`event_description_${index + 1}`],
