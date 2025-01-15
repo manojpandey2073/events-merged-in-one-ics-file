@@ -451,7 +451,7 @@ function getFormData() {
                     lastArray.push({
                         title: item.data[`event_name_${index + 1}`],
                         description: item.data[`event_description_${index + 1}`],
-                        start: dateStart.toISOString(),
+                        start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
                         location: item.data[`event_location_${index + 1}`],
                         duration: { hours: Number(item.data[`event_hour_${index + 1}`]), minutes: Number(item.data[`event_min_${index + 1}`]) },
                         organizer: {name: item.data[`event_organiser_name_${index + 1}`], email: item.data[`event_organiser_email_${index + 1}`]}
@@ -459,11 +459,10 @@ function getFormData() {
                 } else {
                     // Dynamically construct keys for other occurrences
                     const dateStart = new Date(item.data[`event_date_time_${index + 1}`]); // Ensure this is in UTC
-                    console.log(dateStart);
                     lastArray.push({
                         title: item.data[`event_name_${index + 1}`],
                         description: item.data[`event_description_${index + 1}`],
-                        start: dateStart.toISOString(),
+                        start: [dateStart.getUTCFullYear(), dateStart.getUTCMonth() + 1, dateStart.getUTCDate(), dateStart.getUTCHours(), dateStart.getUTCMinutes()],
                         location: item.data[`event_location_${index + 1}`],
                         duration: { hours: Number(item.data[`event_hour_${index + 1}`]), minutes: Number(item.data[`event_min_${index + 1}`]) },
                         organizer: { name: item.data[`event_organiser_name_${index + 1}`], email: item.data[`event_organiser_email_${index + 1}`] }
