@@ -451,7 +451,7 @@ function getFormData() {
                     lastArray.push({
                         title: item.data[`event_name_${index + 1}`],
                         description: item.data[`event_description_${index + 1}`],
-                        start: new Date(Date.UTC(dateStart.getUTCFullYear(), dateStart.getUTCMonth(), dateStart.getUTCDate(), dateStart.getUTCHours(), dateStart.getUTCMinutes())).toISOString(),
+                        start: dateStart.toISOString(),
                         location: item.data[`event_location_${index + 1}`],
                         duration: { hours: Number(item.data[`event_hour_${index + 1}`]), minutes: Number(item.data[`event_min_${index + 1}`]) },
                         organizer: {name: item.data[`event_organiser_name_${index + 1}`], email: item.data[`event_organiser_email_${index + 1}`]}
@@ -463,7 +463,7 @@ function getFormData() {
                     lastArray.push({
                         title: item.data[`event_name_${index + 1}`],
                         description: item.data[`event_description_${index + 1}`],
-                        start: new Date(Date.UTC(dateStart.getUTCFullYear(), dateStart.getUTCMonth(), dateStart.getUTCDate(), dateStart.getUTCHours(), dateStart.getUTCMinutes())).toISOString(),
+                        start: dateStart.toISOString(),
                         location: item.data[`event_location_${index + 1}`],
                         duration: { hours: Number(item.data[`event_hour_${index + 1}`]), minutes: Number(item.data[`event_min_${index + 1}`]) },
                         organizer: { name: item.data[`event_organiser_name_${index + 1}`], email: item.data[`event_organiser_email_${index + 1}`] }
