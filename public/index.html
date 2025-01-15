@@ -16,7 +16,7 @@
 
     <!-- stylesheet -->
     <link rel="stylesheet" href="/css/style.css">
-
+    
 
 
 </head>
@@ -39,7 +39,7 @@
                             <div class="minimized_date_container">
                                 <div class="minimized_date"></div>
                             </div>
-                            
+
                         </div>
                         <form action="" name="form_1" id="form_1">
                             <div class="event_merger_form_container">
@@ -58,7 +58,8 @@
                                                 <label for="event_date_time">Date and Time</label>
                                                 <div class="event_date_time_div">
                                                     <input type="datetime-local" required name="event_date_time_1"
-                                                        value="2024-12-08T10:00" id="event_date_time_1">
+                                                        value="2024-12-08T10:00" class="datetime-picker"
+                                                        id="event_date_time_1">
                                                 </div>
                                             </div>
                                         </div>
@@ -89,18 +90,19 @@
 
 
                                     </div>
-                                    
+
                                     <div class="event_description_container">
                                         <label for="event_description">Description</label>
                                         <textarea name="event_description_1" id="event_description_1"
                                             required></textarea>
                                     </div>
-                                    
+
                                     <div class="event_organiser_details_container">
                                         <div class="event_organiser_details_heading">
-                                            <h2 class="event_organiser_details_heading_text">Event Organiser Details</h2>
+                                            <h2 class="event_organiser_details_heading_text">Event Organiser Details
+                                            </h2>
                                         </div>
-                                        
+
                                         <div class="event_organiser_details">
                                             <div class="event_organiser_name">
                                                 <label for="">Organiser Name</label>
@@ -144,6 +146,7 @@
     </section>
 
     <script src="/js/index.js"></script>
+   
 
 
 </body>
