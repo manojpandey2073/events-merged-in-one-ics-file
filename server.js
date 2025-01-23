@@ -34,8 +34,8 @@ app.post('/saveICS', (req, res) => {
      
       setTimeout(() => {
           console.log('this is-----done----->>');
-          res.json({ url: `https://mats.demandtech.org/events/${req.body[0].data[0].title}.ics` });
-      }, 3000);
+          res.json({ fileURL: `https://events-merged-in-one-ics-file-1.onrender.com/events/${req.body[0].data[0].title}.ics` });
+      }, 1000);
 
   });
 });
