@@ -19,55 +19,22 @@ app.get('/', (req, res) => {
 
 // API endpoint to handle form submissions and generate ICS file
 app.post('/saveICS', (req, res) => {
-  try {
-    const { email, data } = req.body;
-
-    if (!email || !data || !Array.isArray(data)) {
-      return res.status(400).json({ message: 'Invalid request: Missing email or data' });
-    }
-
-    const events = data.map(event => {
-      if (!Array.isArray(event.start) || event.start.length !== 5) {
-        console.error('Invalid start date format for event:', event);
-        return null;
+  console.log(req.body[0].data[0].duration.minutes)
+  console.log('this is----->>', req.body[0]);
+  
+  ics.createEvents(req.body[0].data, (error, value) => {
+      if (error) {
+          console.log(error)
+          return
       }
+      fs.writeFileSync(`events/${req.body[0].data[0].title}.ics`, value)
+     
+      setTimeout(() => {
+          console.log('this is-----done----->>');
+          res.json({ url: `https://mats.demandtech.org/events/${req.body[0].data[0].title}.ics` });
+      }, 3000);
 
-      return {
-        title: event.title,
-        description: event.description,
-        location: event.location,
-        start: event.start,
-        duration: {
-          hours: Number(event.duration.hours),
-          minutes: Number(event.duration.minutes),
-        },
-        organizer: {
-          name: event.organizer.name,
-          email: event.organizer.email
-        },
-      };
-    }).filter(Boolean);
-
-    if (events.length === 0) {
-      return res.status(400).json({ message: 'No valid events to create ICS file.' });
-    }
-
-    const result = ics.createEvents(events);
-
-    if (result.error) {
-      console.error('Error creating ICS file:', result.error);
-      return res.status(500).json({ message: 'Failed to create ICS file.' });
-    }
-
-    const filePath = path.join(__dirname, 'public', 'events.ics');
-    fs.writeFileSync(filePath, result.value); // Save the ICS file
-    const baseUrl = `https://${req.headers.host}`;
-    const fileURL = `${baseUrl}/events.ics`;
-    res.status(200).json({ fileURL: fileURL }); // Send URL for download
-  } catch (error) {
-    console.error('Error processing request:', error);
-    res.status(500).json({ message: 'Internal Server Error' });
-  }
+  });
 });
 
 
