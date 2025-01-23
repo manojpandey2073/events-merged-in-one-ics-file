@@ -465,7 +465,7 @@ function getFormData() {
                         start: isoToICSDate(isoString),
                         location: item.data[`event_location_${index + 1}`],
                         duration: { hours: Number(item.data[`event_hour_${index + 1}`]), minutes: Number(item.data[`event_min_${index + 1}`]) },
-                        organizer: { name: `${item.data[`event_organiser_name_${index + 1}_${ind}`]}`, email: `${item.data[`event_organiser_email_${index + 1}_${ind}`]}` },
+                        organizer: { name: `${item.data[`event_organiser_name_${index + 1}`]}`, email: `${item.data[`event_organiser_email_${index + 1}`]}` },
                         alarms: [
                             {
                                 action: 'display',
@@ -480,10 +480,10 @@ function getFormData() {
                     const isoString = dateStart.toISOString();
                     lastArray.push({
                         title: item.data[`event_name_${index + 1}`],
-                        description: item.data[`event_description_${index + 1}`],
+                        description: item.data[`event_description_${index + 1}_${ind}`],
                         start: isoToICSDate(isoString),
-                        location: item.data[`event_location_${index + 1}`],
-                        duration: { hours: Number(item.data[`event_hour_${index + 1}`]), minutes: Number(item.data[`event_min_${index + 1}`]) },
+                        location: item.data[`event_location_${index + 1}_${ind}`],
+                        duration: { hours: `${item.data[`event_hour_${index + 1}_${ind}`]}`, minutes: `${item.data[`event_min_${index + 1}_${ind}`]}` },
                         organizer: { name: `${item.data[`event_organiser_name_${index + 1}_${ind}`]}`, email: `${item.data[`event_organiser_email_${index + 1}_${ind}`]}` },
                         alarms: [
                             {
