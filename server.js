@@ -27,7 +27,10 @@ app.post('/saveICS', (req, res) => {
           console.log(error)
           return
       }
-      fs.writeFileSync(`events/${req.body[0].data[0].title}.ics`, value)
+      fs.writeFileSync(
+    path.join(__dirname, 'public', `events/${req.body[0].data[0].title}.ics`),
+    value
+);
      
       setTimeout(() => {
           console.log('this is-----done----->>');
