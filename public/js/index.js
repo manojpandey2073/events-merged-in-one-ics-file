@@ -391,7 +391,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
+function isoToICSDate(isoString) {
+    const date = new Date(isoString);
+    const year = date.getUTCFullYear();
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(date.getUTCDate()).padStart(2, '0');
+    const hours = String(date.getUTCHours()).padStart(2, '0');
+    const minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    const seconds = String(date.getUTCSeconds()).padStart(2, '0');
 
+    return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
+}
 
 function getFormData() {
     let allFormData = []; // Store data from all forms here
@@ -448,10 +458,11 @@ function getFormData() {
                 if (ind == 0) {
                     // For the first occurrence, use "_1" keys
                     const dateStart = new Date(item.data[`event_date_time_${index + 1}`]);
+                    const isoString = dateStart.toISOString();
                     lastArray.push({
                         title: item.data[`event_name_${index + 1}`],
                         description: item.data[`event_description_${index + 1}`],
-                        start: [dateStart.getFullYear(), dateStart.getMonth() + 1, dateStart.getDate(), dateStart.getHours(), dateStart.getMinutes()],
+                        start: isoToICSDate(isoString),
                         location: item.data[`event_location_${index + 1}`],
                         duration: { hours: Number(item.data[`event_hour_${index + 1}`]), minutes: Number(item.data[`event_min_${index + 1}`]) },
                         organizer: { name: `${item.data[`event_organiser_name_${index + 1}_${ind}`]}`, email: `${item.data[`event_organiser_email_${index + 1}_${ind}`]}` },
@@ -466,10 +477,11 @@ function getFormData() {
                 } else {
                     // Dynamically construct keys for other occurrences
                     const dateStart = new Date(item.data[`event_date_time_${index + 1}`]); // Ensure this is in UTC
+                    const isoString = dateStart.toISOString();
                     lastArray.push({
                         title: item.data[`event_name_${index + 1}`],
                         description: item.data[`event_description_${index + 1}`],
-                        start: [dateStart.getUTCFullYear(), dateStart.getUTCMonth() + 1, dateStart.getUTCDate(), dateStart.getUTCHours(), dateStart.getUTCMinutes()],
+                        start: isoToICSDate(isoString),
                         location: item.data[`event_location_${index + 1}`],
                         duration: { hours: Number(item.data[`event_hour_${index + 1}`]), minutes: Number(item.data[`event_min_${index + 1}`]) },
                         organizer: { name: `${item.data[`event_organiser_name_${index + 1}_${ind}`]}`, email: `${item.data[`event_organiser_email_${index + 1}_${ind}`]}` },
