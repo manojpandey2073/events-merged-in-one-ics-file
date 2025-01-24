@@ -19,22 +19,24 @@ app.get('/', (req, res) => {
 
 // API endpoint to handle form submissions and generate ICS file
 app.post('/saveICS', (req, res) => {
-  console.log(req.body[0].data[0].duration.minutes)
+  console.log(req.body.data[0].duration.minutes)
   console.log('this is----->>', req.body[0]);
   
-  ics.createEvents(req.body[0].data, (error, value) => {
+  ics.createEvents(req.body.data, (error, value) => {
       if (error) {
           console.log(error)
           return
       }
-      fs.writeFileSync(
-    path.join(__dirname, 'public', `events/${req.body[0].data[0].title}.ics`),
-    value
-);
+       // Define the events directory
+       const eventsDir = path.join(__dirname, 'public');
+       // Write the ICS file to the events directory
+       const fileName = `${req.body.data[0].title}.ics`;
+       const filePath = path.join(eventsDir, fileName);
+       fs.writeFileSync(filePath, value);
      
       setTimeout(() => {
           console.log('this is-----done----->>');
-          res.json({ fileURL: `https://events-merged-in-one-ics-file-1.onrender.com/events/${req.body[0].data[0].title}.ics` });
+          res.json({ fileURL: `https://events-merged-in-one-ics-file-1.onrender.com/events/${fileName}` });
       }, 1000);
 
   });
