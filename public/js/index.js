@@ -403,6 +403,43 @@ function isoToICSDate(isoString) {
     return `${year}${month}${day}T${hours}${minutes}${seconds}Z`;
 }
 
+function parseCSVFile(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const csvContent = e.target.result;
+
+            // Parse CSV content into an array of objects
+            const rows = csvContent.trim().split('\n');
+            const headers = rows[0].replace(/"/g, '').split(',');
+
+            const data = rows.slice(1).map(row => {
+                const values = row.replace(/"/g, '').split(',');
+                const attendee = headers.reduce((acc, header, index) => {
+                    acc[header] = values[index];
+                    return acc;
+                }, {});
+
+                // Add RSVP details to each attendee
+                attendee.rsvp = true;
+                attendee.partstat = 'ACCEPTED';
+                attendee.role = 'REQ-PARTICIPANT';
+
+                return attendee;
+            });
+
+            resolve(data); // Resolve the promise with parsed data
+        };
+
+        reader.onerror = function (err) {
+            reject(err); // Reject the promise on error
+        };
+
+        reader.readAsText(file);
+    });
+}
+
 function getFormData() {
     let allFormData = []; // Store data from all forms here
 
@@ -459,6 +496,8 @@ function getFormData() {
                     // For the first occurrence, use "_1" keys
                     const dateStart = new Date(item.data[`event_date_time_${index + 1}`]);
                     const isoString = dateStart.toISOString();
+                    const csvInput = (item.data[`event_attendees_${index + 1}`]);
+                    console.log('csvInput:', csvInput);
                     lastArray.push({
                         title: item.data[`event_name_${index + 1}`],
                         description: item.data[`event_description_${index + 1}`],
@@ -472,12 +511,15 @@ function getFormData() {
                                 description: item.data[`event_name_${index + 1}`],
                                 trigger: { minutes: 10, before: true },
                             },
-                        ]
+                        ],
+                        attendees : parseCSVFile(csvInput)
                     });
                 } else {
                     // Dynamically construct keys for other occurrences
                     const dateStart = new Date(item.data[`event_date_time_${index + 1}`]); // Ensure this is in UTC
                     const isoString = dateStart.toISOString();
+                    const csvInput = (item.data[`event_attendees_${index + 1}`]);
+                    console.log('csvInput:', csvInput);
                     lastArray.push({
                         title: item.data[`event_name_${index + 1}`],
                         description: item.data[`event_description_${index + 1}_${ind}`],
@@ -491,7 +533,8 @@ function getFormData() {
                                 description: item.data[`event_name_${index + 1}`],
                                 trigger: { minutes: 10, before: true },
                             },
-                        ]
+                        ],
+                        attendees : parseCSVFile(csvInput)
                     });
 
                 }
