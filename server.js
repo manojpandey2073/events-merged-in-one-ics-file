@@ -36,7 +36,7 @@ app.post('/saveICS', (req, res) => {
      
       setTimeout(() => {
           console.log('this is-----done----->>');
-          res.json({ fileURL: `https://events-merged-in-one-ics-file-1.onrender.com/events/${fileName}` });
+          res.json({ fileURL: `https://events-merged-in-one-ics-file-1.onrender.com/${fileName}` });
       }, 1000);
 
   });
